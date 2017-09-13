@@ -1,0 +1,11 @@
+Game TODO List
+Mechanics / Gameplay
+    Add tiles / blocks
+        Add colision to those blocks
+    Add a camera
+    Add a second test scene to test transition between gameplay scenes (outdoors => indoors)
+Design / Art / Story
+    Decide on resolution
+    Decide on art size
+User QOL
+    Custom control configurations
