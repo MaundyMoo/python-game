@@ -141,6 +141,6 @@ class GameScene(SceneBase):
         for each in self.grid:
             self.tiles[each[2]].render(screen, each)
         self.char.render(screen)
-
+        
 if __name__ == "__main__":     
     run_game(width, height, 60, TitleScene())

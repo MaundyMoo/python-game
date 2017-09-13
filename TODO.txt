@@ -1,7 +1,6 @@
 Game TODO List
 Mechanics / Gameplay
-    Add tiles / blocks
-        Add colision to those blocks
+    Replace inefficient tile logic with a background and have collisions occur between objects rather than tiles
     Add a camera
     Add a second test scene to test transition between gameplay scenes (outdoors => indoors)
 Design / Art / Story

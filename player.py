@@ -15,6 +15,7 @@ class Player:
         self.sprite = image.getImage(sprite)
     def render(self, screen):
         screen.blit(self.sprite, (self.x,self.y))
+        
     def tick(self):
         if(self.moveRight):
             self.x += self.speed
