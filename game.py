@@ -54,7 +54,7 @@ def run_game(width, height, fps, starting_scene):
         #Check if scene needs to be changed
         active_scene = active_scene.next
         #Update the buffer and tick to the next frame
-        pygame.display.update()
+        pygame.display.flip()
         clock.tick(fps)
         print ("fps:", clock.get_fps())
         
@@ -88,11 +88,11 @@ class GameScene(SceneBase):
     tileSize = 64
     def __init__(self):
         SceneBase.__init__(self)
-        self.char = player.Player(0, 0, 5, 5, 'res/Character.png')
+        self.char = player.Player(0, 0, 5, 5, 'C:/Dev/Hobby/res/Character.png')
         ##Tiles
-        grassTile = tile.Tile('res/grass.png', False)
+        grassTile = tile.Tile('C:/Dev/Hobby/res/grass.png', False)
         self.tiles.append(grassTile)
-        flowerTile = tile.Tile('res/grassFlower.png', False)        
+        flowerTile = tile.Tile('C:/Dev/Hobby/res/grassFlower.png', False)        
         self.tiles.append(flowerTile)
         self.grid = self.getGrid()
     
@@ -139,7 +139,7 @@ class GameScene(SceneBase):
     
     def Render(self, screen):
         for each in self.grid:
-            self.tiles[each[3]].render(screen, each)
+            self.tiles[each[2]].render(screen, each)
         self.char.render(screen)
 
 if __name__ == "__main__":     
