@@ -4,8 +4,7 @@ Mechanics / Gameplay
         Or try to optimise by only redrawing tiles near the player
         Method
         -First frame, draw everything tile on the map
-        -For every other frame, get the position of the player and relate that to the tile grid
-        -Draw the tiles near the player
+        -Draw the tiles near the player -- DONE
     Add a camera
     Add a second test scene to test transition between gameplay scenes (outdoors => indoors)
 Design / Art / Story
