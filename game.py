@@ -1,12 +1,3 @@
-#This is the main file that handles the game and scene logic
-import pygame, random
-#Import child modules
-import player, tile
-#Screen size
-width = 540
-height = 400
-
-pygame.init()
 #The base scene that handles the framework logic
 class SceneBase:
     def __init__(self):
@@ -58,7 +49,7 @@ def run_game(width, height, fps, starting_scene):
         #Update the buffer and tick to the next frame
         pygame.display.flip()
         clock.tick(fps)
-        #print ("fps:", clock.get_fps())
+        print ("fps:", clock.get_fps())
         
 class TitleScene(SceneBase):
     font = None
@@ -89,12 +80,13 @@ class GameScene(SceneBase):
     tileSize = [0, 0]
     def __init__(self):
         SceneBase.__init__(self)
-        self.char = player.Player(0, 0, 5, 5, 'C:/Dev/Hobby/res/Character.png')
-        self.map = ('C:/Dev/Hobby/res/map.png')
+        self.char = player.Player(0, 0, 5, 5, 'C:/Dev/git/python-game.git/res/Character.png')
+        #TODO change map from a string of the path to the actual image
+        self.map = ('C:/Dev/git/python-game.git/res/map.png')
         #Tiles
         
-        grassTile = tile.Tile('C:/Dev/Hobby/res/grass.png', False)
-        flowerTile = tile.Tile('C:/Dev/Hobby/res/grassFlower.png', False)
+        grassTile = tile.Tile('C:/Dev/git/python-game.git/res/grass.png', False)
+        flowerTile = tile.Tile('C:/Dev/git/python-game.git/res/grassFlower.png', False)
         
         self.tiles.append(grassTile)
         self.tiles.append(flowerTile)
@@ -109,14 +101,12 @@ class GameScene(SceneBase):
         x = 0
         y = 0
         tileGrid = []
-        print(self.map)
         for x in range(0, int(width / self.tileSize[0]) + 1):
             for y in range(0, int(height / self.tileSize[1]) + 1):
                 type = random.randint(0,1)
                 tileGrid.append((x,y, type))
             y += 1
         x += 1
-        print(tileGrid)
         return tileGrid
         
     def ProcessInput(self, events, pressed_keys):
@@ -167,6 +157,15 @@ class GameScene(SceneBase):
                         self.tiles[each[2]].render(screen, each, offsetX, offsetY)
         #Render character
         self.char.render(screen)
-        
+
+width = 540
+height = 400        
 if __name__ == "__main__":     
+    #This is the main file that handles the game and scene logic
+    import pygame, random
+    #Import child modules
+    import player, tile
+    #Screen size
+    pygame.init()
+
     run_game(width, height, 60, TitleScene())

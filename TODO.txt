@@ -10,6 +10,7 @@ Mechanics / Gameplay - Immediate concerns
             -Learn Pillow (PIL?) module for image scanning
     Add a camera
     Add a second test scene to test transition between gameplay scenes (outdoors => indoors)
+    Move scenes to their own files
 Design / Art / Story - Secondary concerns
     Decide on resolution
     Decide on art size / art direction
