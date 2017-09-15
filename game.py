@@ -5,7 +5,7 @@ import player, tile
 ##Screen size
 width = 540
 height = 400
-#Initialise pygame
+
 pygame.init()
 ##The base scene that handles the framework logic
 class SceneBase:
@@ -84,30 +84,36 @@ class GameScene(SceneBase):
     char = None
     ##List of used tiles
     tiles = []
-    grid = None
-    tileSize = 64
+    tileGrid = None
+    tileSize = [0, 0]
     def __init__(self):
         SceneBase.__init__(self)
-        self.char = player.Player(0, 0, 5, 5, 'res/Character.png')
+        self.char = player.Player(0, 0, 5, 5, 'C:/Dev/Hobby/res/Character.png')
         ##Tiles
-        grassTile = tile.Tile('res/grass.png', False)
+        
+        grassTile = tile.Tile('C:/Dev/Hobby/res/grass.png', False)
+        flowerTile = tile.Tile('C:/Dev/Hobby/res/grassFlower.png', False)
+        
         self.tiles.append(grassTile)
-        flowerTile = tile.Tile('res/grassFlower.png', False)        
         self.tiles.append(flowerTile)
-        self.grid = self.getGrid()
+        
+        self.tileSize[0] = grassTile.sprite.get_width()
+        self.tileSize[1] = grassTile.sprite.get_height()
+
+        self.tileGrid = self.getGrid()
     
     def getGrid(self):               
         x = 0
         y = 0
-        grid = []
-        ##TODO find a more optimized solution than rerendering every frame
-        for x in range(0, int(width / self.tileSize) + 1):
-            for y in range(0, int(height / self.tileSize) + 1):
+        tileGrid = []
+
+        for x in range(0, int(width / self.tileSize[0]) + 1):
+            for y in range(0, int(height / self.tileSize[1]) + 1):
                 type = random.randint(0,1)
-                grid.append((x,y, type))
+                tileGrid.append((x,y, type))
             y += 1
         x += 1
-        return grid
+        return tileGrid
         
     def ProcessInput(self, events, pressed_keys):
         #Player movement
@@ -137,9 +143,19 @@ class GameScene(SceneBase):
     def Update(self):
         self.char.tick()
     
+    ##TODO find a more optimized solution than rerendering every frame
+        ##render only tiles near the players position
+    
     def Render(self, screen):
-        for each in self.grid:
-            self.tiles[each[2]].render(screen, each)
+        for each in self.tileGrid:
+            if int(self.char.x / self.tileSize[0]) == each[0] and int(self.char.y / self.tileSize[1]) == each[1]:
+                offsetX = -1
+                offsetY = -1
+                for offsetX in range(-1,2):
+                    for offsetY in range(-1,2):
+                        ##TODO get the tile type from the grid here for each offset
+                        self.tiles[each[2]].render(screen, each, offsetX, offsetY)
+                
         self.char.render(screen)
         
 if __name__ == "__main__":     
