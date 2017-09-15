@@ -1,13 +1,13 @@
-##This is the main file that handles the game and scene logic
+#This is the main file that handles the game and scene logic
 import pygame, random
-##Import child modules
+#Import child modules
 import player, tile
-##Screen size
+#Screen size
 width = 540
 height = 400
 
 pygame.init()
-##The base scene that handles the framework logic
+#The base scene that handles the framework logic
 class SceneBase:
     def __init__(self):
         self.next = self  
@@ -32,7 +32,7 @@ def run_game(width, height, fps, starting_scene):
     active_scene = starting_scene
     while active_scene != None:
         pressed_keys = pygame.key.get_pressed()       
-        # Event filtering - Handles closing the game
+        #Event filtering - Detects if user wants to close the game, otherwise sends inputs to be handled by scene
         filtered_events = []
         for event in pygame.event.get():
             quit_attempt = False
@@ -71,7 +71,7 @@ class TitleScene(SceneBase):
     def ProcessInput(self, events, pressed_keys):
         for event in events:
             if event.type == pygame.KEYDOWN and (event.key == pygame.K_RETURN or event.key == pygame.K_SPACE):
-                # Move to the next scene when the user pressed Enter
+                #Move to the next scene when the user pressed Enter
                 self.SwitchToScene(GameScene())
     
     def Update(self):
@@ -84,14 +84,14 @@ class TitleScene(SceneBase):
 
 class GameScene(SceneBase):
     backgroundRendered = False
-    ##List of used tiles
+    #List of used tiles
     tiles = []
     tileSize = [0, 0]
     def __init__(self):
         SceneBase.__init__(self)
         self.char = player.Player(0, 0, 5, 5, 'C:/Dev/Hobby/res/Character.png')
         self.map = ('C:/Dev/Hobby/res/map.png')
-        ##Tiles
+        #Tiles
         
         grassTile = tile.Tile('C:/Dev/Hobby/res/grass.png', False)
         flowerTile = tile.Tile('C:/Dev/Hobby/res/grassFlower.png', False)
@@ -104,7 +104,7 @@ class GameScene(SceneBase):
 
         self.tileGrid = self.getGrid()
     
-    ##TODO replace with map reading
+    #TODO replace with map reading
     def getGrid(self):               
         x = 0
         y = 0
@@ -123,7 +123,7 @@ class GameScene(SceneBase):
         #Player movement
         for event in events:
             #TODO rework code to allow configuration
-            ##Begin movement
+            #Begin movement
             if event.type == pygame.KEYDOWN:
                 if (event.key == pygame.K_UP):
                     self.char.moveUp = True
@@ -133,7 +133,7 @@ class GameScene(SceneBase):
                     self.char.moveLeft = True
                 if (event.key == pygame.K_RIGHT):
                     self.char.moveRight = True
-            ##Stop movement
+            #Stop movement
             elif event.type == pygame.KEYUP:
                 if (event.key == pygame.K_UP):
                     self.char.moveUp = False
@@ -148,24 +148,24 @@ class GameScene(SceneBase):
         self.char.tick()
     
     def initialRender(self, screen):
-        ##Render all the tiles at the beginning
+        #Render all the tiles at the beginning
         for each in self.tileGrid:
             self.tiles[each[2]].render(screen, each, 0, 0)
         self.backgroundRendered = True
     def Render(self, screen):
-        ##TODO render all tiles at the start - probably create new method
-        ##Render tiles around player
+        #Render tiles around player 
         if not self.backgroundRendered:
             self.initialRender(screen)
+        #Could possibly rework logic into player class if need to reuse multiple times, not sure on feasbility though
         for each in self.tileGrid:
             if int(self.char.x / self.tileSize[0]) == each[0] and int(self.char.y / self.tileSize[1]) == each[1]:
                 offsetX = -1
                 offsetY = -1
                 for offsetX in range(-1,2):
                     for offsetY in range(-1,2):                       
-                        ##TODO get the tile type from the grid here for each offset
+                        #TODO get the tile type from the grid here for each offset
                         self.tiles[each[2]].render(screen, each, offsetX, offsetY)
-        ##Render character
+        #Render character
         self.char.render(screen)
         
 if __name__ == "__main__":     
