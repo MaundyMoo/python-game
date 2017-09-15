@@ -58,7 +58,7 @@ def run_game(width, height, fps, starting_scene):
         #Update the buffer and tick to the next frame
         pygame.display.flip()
         clock.tick(fps)
-        print ("fps:", clock.get_fps())
+        #print ("fps:", clock.get_fps())
         
 class TitleScene(SceneBase):
     font = None
@@ -83,15 +83,14 @@ class TitleScene(SceneBase):
 
 
 class GameScene(SceneBase):
-    char = None
     backgroundRendered = False
     ##List of used tiles
     tiles = []
-    tileGrid = None
     tileSize = [0, 0]
     def __init__(self):
         SceneBase.__init__(self)
         self.char = player.Player(0, 0, 5, 5, 'C:/Dev/Hobby/res/Character.png')
+        self.map = ('C:/Dev/Hobby/res/map.png')
         ##Tiles
         
         grassTile = tile.Tile('C:/Dev/Hobby/res/grass.png', False)
@@ -105,17 +104,19 @@ class GameScene(SceneBase):
 
         self.tileGrid = self.getGrid()
     
+    ##TODO replace with map reading
     def getGrid(self):               
         x = 0
         y = 0
         tileGrid = []
-
+        print(self.map)
         for x in range(0, int(width / self.tileSize[0]) + 1):
             for y in range(0, int(height / self.tileSize[1]) + 1):
                 type = random.randint(0,1)
                 tileGrid.append((x,y, type))
             y += 1
         x += 1
+        print(tileGrid)
         return tileGrid
         
     def ProcessInput(self, events, pressed_keys):
@@ -161,7 +162,7 @@ class GameScene(SceneBase):
                 offsetX = -1
                 offsetY = -1
                 for offsetX in range(-1,2):
-                    for offsetY in range(-1,2):
+                    for offsetY in range(-1,2):                       
                         ##TODO get the tile type from the grid here for each offset
                         self.tiles[each[2]].render(screen, each, offsetX, offsetY)
         ##Render character
