@@ -1,6 +1,11 @@
 Game TODO List
 Mechanics / Gameplay
     Replace inefficient tile logic with a background and have collisions occur between objects rather than tiles
+        Or try to optimise by only redrawing tiles near the player
+        Method
+        -First frame, draw everything tile on the map
+        -For every other frame, get the position of the player and relate that to the tile grid
+        -Draw the tiles near the player
     Add a camera
     Add a second test scene to test transition between gameplay scenes (outdoors => indoors)
 Design / Art / Story

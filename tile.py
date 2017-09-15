@@ -8,7 +8,5 @@ class Tile:
         self.width = self.sprite.get_width()
         ##Boolean value
         self.collision = collision
-    def render(self, screen,pos):
-        
-        screen.blit(self.sprite, (pos[0]*self.sprite.get_width(), pos[1]*self.sprite.get_height()))
-   
+    def render(self, screen, pos, offsetX, offsetY):        
+        screen.blit(self.sprite, ((pos[0]+offsetX)*self.sprite.get_width(), (pos[1]+offsetY)*self.sprite.get_height()))
