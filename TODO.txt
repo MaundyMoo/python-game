@@ -1,14 +1,20 @@
 Game TODO List
-Mechanics / Gameplay
+Mechanics / Gameplay - Immediate concerns
     Replace inefficient tile logic with a background and have collisions occur between objects rather than tiles
         Or try to optimise by only redrawing tiles near the player
         Method
-        -First frame, draw everything tile on the map
+        -First frame, draw everything tile on the map -- DONE
         -Draw the tiles near the player -- DONE
+        -Rework how tiles are chosen to be rendered, make a map function where a 
+         different tile is drawn based on colour of the pixel
+            -Learn Pillow (PIL?) module for image scanning
     Add a camera
     Add a second test scene to test transition between gameplay scenes (outdoors => indoors)
-Design / Art / Story
+Design / Art / Story - Secondary concerns
     Decide on resolution
-    Decide on art size
-User QOL
+    Decide on art size / art direction
+    Music
+        Royalty free or original 'compositions'
+User QOL - Final concerns
     Custom control configurations
+    fullscreen
