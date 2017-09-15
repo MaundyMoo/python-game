@@ -15,6 +15,8 @@ class SceneBase:
         print("ProcessInput not overwritten")
     def Update(self):
         print("Update not overwritten")
+    def initialRender(self, screen):
+        print("initialRender not overwritten")
     def Render(self, screen):
         print("Render not overwritten")
     
@@ -82,6 +84,7 @@ class TitleScene(SceneBase):
 
 class GameScene(SceneBase):
     char = None
+    backgroundRendered = False
     ##List of used tiles
     tiles = []
     tileGrid = None
@@ -143,10 +146,16 @@ class GameScene(SceneBase):
     def Update(self):
         self.char.tick()
     
-    ##TODO find a more optimized solution than rerendering every frame
-        ##render only tiles near the players position
-    
+    def initialRender(self, screen):
+        ##Render all the tiles at the beginning
+        for each in self.tileGrid:
+            self.tiles[each[2]].render(screen, each, 0, 0)
+        self.backgroundRendered = True
     def Render(self, screen):
+        ##TODO render all tiles at the start - probably create new method
+        ##Render tiles around player
+        if not self.backgroundRendered:
+            self.initialRender(screen)
         for each in self.tileGrid:
             if int(self.char.x / self.tileSize[0]) == each[0] and int(self.char.y / self.tileSize[1]) == each[1]:
                 offsetX = -1
@@ -155,7 +164,7 @@ class GameScene(SceneBase):
                     for offsetY in range(-1,2):
                         ##TODO get the tile type from the grid here for each offset
                         self.tiles[each[2]].render(screen, each, offsetX, offsetY)
-                
+        ##Render character
         self.char.render(screen)
         
 if __name__ == "__main__":     
