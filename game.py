@@ -88,11 +88,11 @@ class GameScene(SceneBase):
     tileSize = [0, 0]
     def __init__(self):
         SceneBase.__init__(self)
-        self.char = player.Player(0, 0, 5, 5, 'C:/Dev/Hobby/res/Character.png')
+        self.char = player.Player(0, 0, 5, 5, 'res/Character.png')
         ##Tiles
         
-        grassTile = tile.Tile('C:/Dev/Hobby/res/grass.png', False)
-        flowerTile = tile.Tile('C:/Dev/Hobby/res/grassFlower.png', False)
+        grassTile = tile.Tile('res/grass.png', False)
+        flowerTile = tile.Tile('res/grassFlower.png', False)
         
         self.tiles.append(grassTile)
         self.tiles.append(flowerTile)
