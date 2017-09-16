@@ -49,7 +49,7 @@ def run_game(width, height, fps, starting_scene):
         #Update the buffer and tick to the next frame
         pygame.display.flip()
         clock.tick(fps)
-        print ("fps:", clock.get_fps())
+        #print ("fps:", clock.get_fps())
         
 class TitleScene(SceneBase):
     font = None
@@ -83,11 +83,17 @@ class GameScene(SceneBase):
         self.char = player.Player(0, 0, 5, 5, 'C:/Dev/git/python-game.git/res/Character.png')
         #TODO change map from a string of the path to the actual image
         self.map = mapper.readMapTiles('C:/Dev/git/python-game.git/res/map.png')
-        self.map.returnMap()
+        self.map = self.map.returnMap()
+        print(self.map) 
         #Tiles
-        
+        #TODO replace with tiles based on colours (dictionary perhaps?)
         grassTile = tile.Tile('C:/Dev/git/python-game.git/res/grass.png', False)
         flowerTile = tile.Tile('C:/Dev/git/python-game.git/res/grassFlower.png', False)
+        #Dictionary to correspond each tile type to an rgb value on the map
+        self.maptiles = {
+            grassTile : (0,255,0),
+            flowerTile : (255,255,0)
+        }
         
         self.tiles.append(grassTile)
         self.tiles.append(flowerTile)
@@ -144,9 +150,10 @@ class GameScene(SceneBase):
             self.tiles[each[2]].render(screen, each, 0, 0)
         self.backgroundRendered = True
     def Render(self, screen):
-        #Render tiles around player 
+        #render the background on the first frame
         if not self.backgroundRendered:
             self.initialRender(screen)
+        #Render tiles around player 
         #Could possibly rework logic into player class if need to reuse multiple times, not sure on feasbility though
         for each in self.tileGrid:
             if int(self.char.x / self.tileSize[0]) == each[0] and int(self.char.y / self.tileSize[1]) == each[1]:
