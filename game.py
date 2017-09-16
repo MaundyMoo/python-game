@@ -82,7 +82,8 @@ class GameScene(SceneBase):
         SceneBase.__init__(self)
         self.char = player.Player(0, 0, 5, 5, 'C:/Dev/git/python-game.git/res/Character.png')
         #TODO change map from a string of the path to the actual image
-        self.map = ('C:/Dev/git/python-game.git/res/map.png')
+        self.map = mapper.readMapTiles('C:/Dev/git/python-game.git/res/map.png')
+        self.map.returnMap()
         #Tiles
         
         grassTile = tile.Tile('C:/Dev/git/python-game.git/res/grass.png', False)
@@ -164,7 +165,7 @@ if __name__ == "__main__":
     #This is the main file that handles the game and scene logic
     import pygame, random
     #Import child modules
-    import player, tile
+    import player, tile, mapper
     #Screen size
     pygame.init()
 
