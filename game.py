@@ -49,7 +49,7 @@ def run_game(width, height, fps, starting_scene):
         #Update the buffer and tick to the next frame
         pygame.display.flip()
         clock.tick(fps)
-        #print ("fps:", clock.get_fps())
+        print ("fps:", clock.get_fps())
         
 class TitleScene(SceneBase):
     font = None
@@ -76,7 +76,6 @@ class TitleScene(SceneBase):
 class GameScene(SceneBase):
     backgroundRendered = False
     #List of used tiles
-    tiles = []
     tileSize = [0, 0]
     def __init__(self):
         SceneBase.__init__(self)
@@ -84,37 +83,17 @@ class GameScene(SceneBase):
         #TODO change map from a string of the path to the actual image
         self.map = mapper.readMapTiles('C:/Dev/git/python-game.git/res/map.png')
         self.map = self.map.returnMap()
-        print(self.map) 
         #Tiles
         #TODO replace with tiles based on colours (dictionary perhaps?)
         grassTile = tile.Tile('C:/Dev/git/python-game.git/res/grass.png', False)
         flowerTile = tile.Tile('C:/Dev/git/python-game.git/res/grassFlower.png', False)
         #Dictionary to correspond each tile type to an rgb value on the map
         self.maptiles = {
-            grassTile : (0,255,0),
-            flowerTile : (255,255,0)
+            (0,255,0) : grassTile,
+            (255,255,0) : flowerTile
         }
-        
-        self.tiles.append(grassTile)
-        self.tiles.append(flowerTile)
-        
         self.tileSize[0] = grassTile.sprite.get_width()
-        self.tileSize[1] = grassTile.sprite.get_height()
-
-        self.tileGrid = self.getGrid()
-    
-    #TODO replace with map reading
-    def getGrid(self):               
-        x = 0
-        y = 0
-        tileGrid = []
-        for x in range(0, int(width / self.tileSize[0]) + 1):
-            for y in range(0, int(height / self.tileSize[1]) + 1):
-                type = random.randint(0,1)
-                tileGrid.append((x,y, type))
-            y += 1
-        x += 1
-        return tileGrid
+        self.tileSize[1] = grassTile.sprite.get_height()  
         
     def ProcessInput(self, events, pressed_keys):
         #Player movement
@@ -146,23 +125,27 @@ class GameScene(SceneBase):
     
     def initialRender(self, screen):
         #Render all the tiles at the beginning
-        for each in self.tileGrid:
-            self.tiles[each[2]].render(screen, each, 0, 0)
+        for row in range(0, len(self.map)):
+            for column in range (0, len(self.map[0])):
+                screen.blit(self.maptiles[self.map[row][column]].sprite, (column * self.tileSize[0], row * self.tileSize[1]))
         self.backgroundRendered = True
+        
     def Render(self, screen):
         #render the background on the first frame
         if not self.backgroundRendered:
             self.initialRender(screen)
+
         #Render tiles around player 
         #Could possibly rework logic into player class if need to reuse multiple times, not sure on feasbility though
-        for each in self.tileGrid:
-            if int(self.char.x / self.tileSize[0]) == each[0] and int(self.char.y / self.tileSize[1]) == each[1]:
-                offsetX = -1
-                offsetY = -1
-                for offsetX in range(-1,2):
-                    for offsetY in range(-1,2):                       
-                        #TODO get the tile type from the grid here for each offset
-                        self.tiles[each[2]].render(screen, each, offsetX, offsetY)
+        for row in range(0, len(self.map)):
+            for column in range (0, len(self.map[0])):
+                if int(self.char.x / self.tileSize[0]) == column and int(self.char.y / self.tileSize[1]) == row:
+                    offsetX = -1
+                    offsetY = -1
+                    for offsetX in range(-1,2):
+                        for offsetY in range(-1,2):
+                            screen.blit(self.maptiles[self.map[row + offsetX][column + offsetY]].sprite, ((column + offsetY) * self.tileSize[0], (row + offsetX) * self.tileSize[1]))
+                
         #Render character
         self.char.render(screen)
 
