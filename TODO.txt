@@ -1,14 +1,28 @@
 Game TODO List
-Mechanics / Gameplay
+Mechanics / Gameplay - Immediate concerns
     Replace inefficient tile logic with a background and have collisions occur between objects rather than tiles
         Or try to optimise by only redrawing tiles near the player
         Method
-        -First frame, draw everything tile on the map
+        -First frame, draw everything tile on the map -- DONE
         -Draw the tiles near the player -- DONE
+        -Rework how tiles are chosen to be rendered, make a map function where a 
+         different tile is drawn based on colour of the pixel
+            -Learn Pillow (PIL?) module for image scanning
     Add a camera
-    Add a second test scene to test transition between gameplay scenes (outdoors => indoors)
-Design / Art / Story
+    Add a second test scene to test transition between gameplay scenes (outdoors => indoors), 
+    as I know that level to level transition should be fairly smooth as I don't need to transfer
+    level information between them
+    Move scenes to their own files
+Design / Art / Story - Secondary concerns
     Decide on resolution
-    Decide on art size
-User QOL
+    Decide on art size / art direction
+    Music
+        Royalty free or original 'compositions'
+        sound effects
+        music direction (dependant on overall art / narrative direction)
+            If I ever get so far as to be able to worry about artistic direction
+            Finishing the framework (even with pygame powering it) will most likely take a 
+            very long time, I don't really know what I'm doing
+User QOL - Final concerns
     Custom control configurations
+    fullscreen

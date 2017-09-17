@@ -1,13 +1,4 @@
-##This is the main file that handles the game and scene logic
-import pygame, random
-##Import child modules
-import player, tile
-##Screen size
-width = 540
-height = 400
-
-pygame.init()
-##The base scene that handles the framework logic
+#The base scene that handles the framework logic
 class SceneBase:
     def __init__(self):
         self.next = self  
@@ -15,6 +6,8 @@ class SceneBase:
         print("ProcessInput not overwritten")
     def Update(self):
         print("Update not overwritten")
+    def initialRender(self, screen):
+        print("initialRender not overwritten")
     def Render(self, screen):
         print("Render not overwritten")
     
@@ -30,7 +23,7 @@ def run_game(width, height, fps, starting_scene):
     active_scene = starting_scene
     while active_scene != None:
         pressed_keys = pygame.key.get_pressed()       
-        # Event filtering - Handles closing the game
+        #Event filtering - Detects if user wants to close the game, otherwise sends inputs to be handled by scene
         filtered_events = []
         for event in pygame.event.get():
             quit_attempt = False
@@ -69,7 +62,7 @@ class TitleScene(SceneBase):
     def ProcessInput(self, events, pressed_keys):
         for event in events:
             if event.type == pygame.KEYDOWN and (event.key == pygame.K_RETURN or event.key == pygame.K_SPACE):
-                # Move to the next scene when the user pressed Enter
+                #Move to the next scene when the user pressed Enter
                 self.SwitchToScene(GameScene())
     
     def Update(self):
@@ -81,45 +74,32 @@ class TitleScene(SceneBase):
 
 
 class GameScene(SceneBase):
-    char = None
-    ##List of used tiles
-    tiles = []
-    tileGrid = None
+    backgroundRendered = False
+    #List of used tiles
     tileSize = [0, 0]
     def __init__(self):
         SceneBase.__init__(self)
-        self.char = player.Player(0, 0, 5, 5, 'res/Character.png')
-        ##Tiles
-        
-        grassTile = tile.Tile('res/grass.png', False)
-        flowerTile = tile.Tile('res/grassFlower.png', False)
-        
-        self.tiles.append(grassTile)
-        self.tiles.append(flowerTile)
-        
+        self.char = player.Player(0, 0, 5, 5, 'C:/Dev/git/python-game.git/res/Character.png')
+        #TODO change map from a string of the path to the actual image
+        self.map = mapper.readMapTiles('C:/Dev/git/python-game.git/res/map.png')
+        self.map = self.map.returnMap()
+        #Tiles
+        #TODO replace with tiles based on colours (dictionary perhaps?)
+        grassTile = tile.Tile('C:/Dev/git/python-game.git/res/grass.png', False)
+        flowerTile = tile.Tile('C:/Dev/git/python-game.git/res/grassFlower.png', False)
+        #Dictionary to correspond each tile type to an rgb value on the map
+        self.maptiles = {
+            (0,255,0) : grassTile,
+            (255,255,0) : flowerTile
+        }
         self.tileSize[0] = grassTile.sprite.get_width()
-        self.tileSize[1] = grassTile.sprite.get_height()
-
-        self.tileGrid = self.getGrid()
-    
-    def getGrid(self):               
-        x = 0
-        y = 0
-        tileGrid = []
-
-        for x in range(0, int(width / self.tileSize[0]) + 1):
-            for y in range(0, int(height / self.tileSize[1]) + 1):
-                type = random.randint(0,1)
-                tileGrid.append((x,y, type))
-            y += 1
-        x += 1
-        return tileGrid
+        self.tileSize[1] = grassTile.sprite.get_height()  
         
     def ProcessInput(self, events, pressed_keys):
         #Player movement
         for event in events:
             #TODO rework code to allow configuration
-            ##Begin movement
+            #Begin movement
             if event.type == pygame.KEYDOWN:
                 if (event.key == pygame.K_UP):
                     self.char.moveUp = True
@@ -129,7 +109,7 @@ class GameScene(SceneBase):
                     self.char.moveLeft = True
                 if (event.key == pygame.K_RIGHT):
                     self.char.moveRight = True
-            ##Stop movement
+            #Stop movement
             elif event.type == pygame.KEYUP:
                 if (event.key == pygame.K_UP):
                     self.char.moveUp = False
@@ -143,20 +123,40 @@ class GameScene(SceneBase):
     def Update(self):
         self.char.tick()
     
-    ##TODO find a more optimized solution than rerendering every frame
-        ##render only tiles near the players position
-    
-    def Render(self, screen):
-        for each in self.tileGrid:
-            if int(self.char.x / self.tileSize[0]) == each[0] and int(self.char.y / self.tileSize[1]) == each[1]:
-                offsetX = -1
-                offsetY = -1
-                for offsetX in range(-1,2):
-                    for offsetY in range(-1,2):
-                        ##TODO get the tile type from the grid here for each offset
-                        self.tiles[each[2]].render(screen, each, offsetX, offsetY)
-                
-        self.char.render(screen)
+    def initialRender(self, screen):
+        #Render all the tiles at the beginning
+        for row in range(0, len(self.map)):
+            for column in range (0, len(self.map[0])):
+                screen.blit(self.maptiles[self.map[row][column]].sprite, (column * self.tileSize[0], row * self.tileSize[1]))
+        self.backgroundRendered = True
         
+    def Render(self, screen):
+        #render the background on the first frame
+        if not self.backgroundRendered:
+            self.initialRender(screen)
+
+        #Render tiles around player 
+        #Could possibly rework logic into player class if need to reuse multiple times, not sure on feasbility though
+        for row in range(0, len(self.map)):
+            for column in range (0, len(self.map[0])):
+                if int(self.char.x / self.tileSize[0]) == column and int(self.char.y / self.tileSize[1]) == row:
+                    offsetX = -1
+                    offsetY = -1
+                    for offsetX in range(-1,2):
+                        for offsetY in range(-1,2):
+                            screen.blit(self.maptiles[self.map[row + offsetX][column + offsetY]].sprite, ((column + offsetY) * self.tileSize[0], (row + offsetX) * self.tileSize[1]))
+                
+        #Render character
+        self.char.render(screen)
+
+width = 540
+height = 400        
 if __name__ == "__main__":     
+    #This is the main file that handles the game and scene logic
+    import pygame, random
+    #Import child modules
+    import player, tile, mapper
+    #Screen size
+    pygame.init()
+
     run_game(width, height, 60, TitleScene())
