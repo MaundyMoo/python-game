@@ -19,6 +19,7 @@ class SceneBase:
 def run_game(width, height, fps, starting_scene):
     screen = pygame.display.set_mode((width, height))
     pygame.display.set_caption("Moundy's Moo")
+    pygame.display.set_icon(image.getImage('C:/Dev/git/python-game.git/res/Moo.ico'))
     clock = pygame.time.Clock()
     active_scene = starting_scene
     while active_scene != None:
@@ -49,7 +50,7 @@ def run_game(width, height, fps, starting_scene):
         #Update the buffer and tick to the next frame
         pygame.display.flip()
         clock.tick(fps)
-        print ("fps:", clock.get_fps())
+        #print ("fps:", clock.get_fps())
         
 class TitleScene(SceneBase):
     font = None
@@ -87,10 +88,12 @@ class GameScene(SceneBase):
         #TODO replace with tiles based on colours (dictionary perhaps?)
         grassTile = tile.Tile('C:/Dev/git/python-game.git/res/grass.png', False)
         flowerTile = tile.Tile('C:/Dev/git/python-game.git/res/grassFlower.png', False)
+        rockTile = tile.Tile('C:/Dev/git/python-game.git/res/rockWall.png', True)
         #Dictionary to correspond each tile type to an rgb value on the map
         self.maptiles = {
             (0,255,0) : grassTile,
-            (255,255,0) : flowerTile
+            (255,255,0) : flowerTile,
+            (100,100,100) : rockTile
         }
         self.tileSize[0] = grassTile.sprite.get_width()
         self.tileSize[1] = grassTile.sprite.get_height()  
@@ -122,6 +125,7 @@ class GameScene(SceneBase):
             
     def Update(self):
         self.char.tick()
+        self.char.checkCollision(self.map, self.maptiles)
     
     def initialRender(self, screen):
         #Render all the tiles at the beginning
@@ -153,9 +157,9 @@ width = 540
 height = 400        
 if __name__ == "__main__":     
     #This is the main file that handles the game and scene logic
-    import pygame, random
+    import pygame
     #Import child modules
-    import player, tile, mapper
+    import player, tile, mapper, image
     #Screen size
     pygame.init()
 

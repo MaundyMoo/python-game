@@ -13,6 +13,7 @@ class Player:
         self.speed = speed
         self.health = health
         self.sprite = image.getImage(sprite)
+        
     def render(self, screen):
         screen.blit(self.sprite, (self.x,self.y))
         
@@ -33,3 +34,18 @@ class Player:
             self.y = game.height - self.sprite.get_height()
         if (self.x > (game.width - self.sprite.get_width())):
             self.x = game.width - self.sprite.get_width()
+    
+    def checkCollision(self, map, mapTiles):
+        #TODO write some long ugly code checking the x / y coordinate for every side of the 
+        #sprite to check for collision and change movemen based on that because I am out of ideas 
+        #As the x and y coordinates default to the top left of the sprite which is impractical 
+        #and inside of the object that I want to prevent it getting inside of and I don't want to make
+        #this easy and limit to only tile based movement 
+        colliding = False
+        playerGridX = int(self.x / 64)
+        playerGridY = int(self.y / 64)
+        if map[playerGridX][playerGridY] == (100,100,100):
+            colliding = True
+        print(playerGridX, playerGridY)
+        if colliding:
+            print('colliding')
