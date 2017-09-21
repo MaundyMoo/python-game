@@ -80,15 +80,15 @@ class GameScene(SceneBase):
     tileSize = [0, 0]
     def __init__(self):
         SceneBase.__init__(self)
-        self.char = player.Player(0, 0, 5, 5, 'C:/Dev/git/python-game.git/res/Character.png')
+        self.char = player.Player(0, 0, 5, 5, 'res/Character.png')
         #TODO change map from a string of the path to the actual image
-        self.map = mapper.readMapTiles('C:/Dev/git/python-game.git/res/map.png')
+        self.map = mapper.readMapTiles('res/map.png')
         self.map = self.map.returnMap()
         #Tiles
         #TODO replace with tiles based on colours (dictionary perhaps?)
-        grassTile = tile.Tile('C:/Dev/git/python-game.git/res/grass.png', False)
-        flowerTile = tile.Tile('C:/Dev/git/python-game.git/res/grassFlower.png', False)
-        rockTile = tile.Tile('C:/Dev/git/python-game.git/res/rockWall.png', True)
+        grassTile = tile.Tile('res/grass.png', False)
+        flowerTile = tile.Tile('res/grassFlower.png', False)
+        rockTile = tile.Tile('res/rockWall.png', True)
         #Dictionary to correspond each tile type to an rgb value on the map
         self.maptiles = {
             (0,255,0) : grassTile,
