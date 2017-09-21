@@ -18,7 +18,7 @@ class SceneBase:
 
 def run_game(width, height, fps, starting_scene):
     screen = pygame.display.set_mode((width, height))
-    pygame.display.set_caption("Moundy's Moo")
+    pygame.display.set_caption("MoundyMoo")
     pygame.display.set_icon(image.getImage('C:/Dev/git/python-game.git/res/Moo.ico'))
     clock = pygame.time.Clock()
     active_scene = starting_scene
@@ -124,8 +124,9 @@ class GameScene(SceneBase):
                     self.char.moveRight = False
             
     def Update(self):
+        self.char.checkCollision(self.map, self.maptiles, self.tileSize)
         self.char.tick()
-        self.char.checkCollision(self.map, self.maptiles)
+
     
     def initialRender(self, screen):
         #Render all the tiles at the beginning
@@ -153,8 +154,8 @@ class GameScene(SceneBase):
         #Render character
         self.char.render(screen)
 
-width = 540
-height = 400        
+width = 580
+height = 500        
 if __name__ == "__main__":     
     #This is the main file that handles the game and scene logic
     import pygame
