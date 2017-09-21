@@ -50,7 +50,7 @@ def run_game(width, height, fps, starting_scene):
         #Update the buffer and tick to the next frame
         pygame.display.flip()
         clock.tick(fps)
-        #print ("fps:", clock.get_fps())
+        print ("fps:", clock.get_fps())
         
 class TitleScene(SceneBase):
     font = None
