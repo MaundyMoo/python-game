@@ -18,7 +18,8 @@ class SceneBase:
 
 def run_game(width, height, fps, starting_scene):
     screen = pygame.display.set_mode((width, height))
-    pygame.display.set_caption("Moundy's Moo")
+    pygame.display.set_caption("MoundyMoo")
+    pygame.display.set_icon(image.getImage('C:/Dev/git/python-game.git/res/Moo.ico'))
     clock = pygame.time.Clock()
     active_scene = starting_scene
     while active_scene != None:
@@ -49,7 +50,7 @@ def run_game(width, height, fps, starting_scene):
         #Update the buffer and tick to the next frame
         pygame.display.flip()
         clock.tick(fps)
-        print ("fps:", clock.get_fps())
+        #print ("fps:", clock.get_fps())
         
 class TitleScene(SceneBase):
     font = None
@@ -87,10 +88,12 @@ class GameScene(SceneBase):
         #TODO replace with tiles based on colours (dictionary perhaps?)
         grassTile = tile.Tile('res/grass.png', False)
         flowerTile = tile.Tile('res/grassFlower.png', False)
+        rockTile = tile.Tile('res/rockWall.png', True)
         #Dictionary to correspond each tile type to an rgb value on the map
         self.maptiles = {
             (0,255,0) : grassTile,
-            (255,255,0) : flowerTile
+            (255,255,0) : flowerTile,
+            (100,100,100) : rockTile
         }
         self.tileSize[0] = grassTile.sprite.get_width()
         self.tileSize[1] = grassTile.sprite.get_height()  
@@ -101,27 +104,29 @@ class GameScene(SceneBase):
             #TODO rework code to allow configuration
             #Begin movement
             if event.type == pygame.KEYDOWN:
-                if (event.key == pygame.K_UP):
+                if (event.key == pygame.K_UP) or (event.key == pygame.K_w):
                     self.char.moveUp = True
-                if (event.key == pygame.K_DOWN):
+                if (event.key == pygame.K_DOWN) or (event.key == pygame.K_s):
                     self.char.moveDown = True
-                if (event.key == pygame.K_LEFT):
+                if (event.key == pygame.K_LEFT) or (event.key == pygame.K_a):
                     self.char.moveLeft = True
-                if (event.key == pygame.K_RIGHT):
+                if (event.key == pygame.K_RIGHT) or (event.key == pygame.K_d):
                     self.char.moveRight = True
             #Stop movement
             elif event.type == pygame.KEYUP:
-                if (event.key == pygame.K_UP):
+                if (event.key == pygame.K_UP) or (event.key == pygame.K_w):
                     self.char.moveUp = False
-                if (event.key == pygame.K_DOWN):
+                if (event.key == pygame.K_DOWN) or (event.key == pygame.K_s):
                     self.char.moveDown = False
-                if (event.key == pygame.K_LEFT):
+                if (event.key == pygame.K_LEFT) or (event.key == pygame.K_a):
                     self.char.moveLeft = False
-                if (event.key == pygame.K_RIGHT):
+                if (event.key == pygame.K_RIGHT) or (event.key == pygame.K_d):
                     self.char.moveRight = False
             
     def Update(self):
+        self.char.checkCollision(self.map, self.maptiles, self.tileSize)
         self.char.tick()
+
     
     def initialRender(self, screen):
         #Render all the tiles at the beginning
@@ -149,13 +154,13 @@ class GameScene(SceneBase):
         #Render character
         self.char.render(screen)
 
-width = 540
-height = 400        
+width = 580
+height = 500        
 if __name__ == "__main__":     
     #This is the main file that handles the game and scene logic
-    import pygame, random
+    import pygame
     #Import child modules
-    import player, tile, mapper
+    import player, tile, mapper, image
     #Screen size
     pygame.init()
 

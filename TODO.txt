@@ -1,13 +1,6 @@
 Game TODO List
 Mechanics / Gameplay - Immediate concerns
-    Replace inefficient tile logic with a background and have collisions occur between objects rather than tiles
-        Or try to optimise by only redrawing tiles near the player
-        Method
-        -First frame, draw everything tile on the map -- DONE
-        -Draw the tiles near the player -- DONE
-        -Rework how tiles are chosen to be rendered, make a map function where a 
-         different tile is drawn based on colour of the pixel
-            -Learn Pillow (PIL?) module for image scanning
+    Tile collision 
     Add a camera
     Add a second test scene to test transition between gameplay scenes (outdoors => indoors), 
     as I know that level to level transition should be fairly smooth as I don't need to transfer
