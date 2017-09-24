@@ -99,34 +99,11 @@ class GameScene(SceneBase):
         self.tileSize[1] = grassTile.sprite.get_height()  
         
     def ProcessInput(self, events, pressed_keys):
-        #Player movement
-        for event in events:
-            #TODO rework code to allow configuration
-            #Begin movement
-            if event.type == pygame.KEYDOWN:
-                if (event.key == pygame.K_UP) or (event.key == pygame.K_w):
-                    self.char.moveUp = True
-                if (event.key == pygame.K_DOWN) or (event.key == pygame.K_s):
-                    self.char.moveDown = True
-                if (event.key == pygame.K_LEFT) or (event.key == pygame.K_a):
-                    self.char.moveLeft = True
-                if (event.key == pygame.K_RIGHT) or (event.key == pygame.K_d):
-                    self.char.moveRight = True
-            #Stop movement
-            elif event.type == pygame.KEYUP:
-                if (event.key == pygame.K_UP) or (event.key == pygame.K_w):
-                    self.char.moveUp = False
-                if (event.key == pygame.K_DOWN) or (event.key == pygame.K_s):
-                    self.char.moveDown = False
-                if (event.key == pygame.K_LEFT) or (event.key == pygame.K_a):
-                    self.char.moveLeft = False
-                if (event.key == pygame.K_RIGHT) or (event.key == pygame.K_d):
-                    self.char.moveRight = False
+        #Player movement now occurs in player class 
+        self.char.checkCollision(self.map, self.maptiles, self.tileSize, pressed_keys)
             
     def Update(self):
-        self.char.checkCollision(self.map, self.maptiles, self.tileSize)
         self.char.tick()
-
     
     def initialRender(self, screen):
         #Render all the tiles at the beginning
