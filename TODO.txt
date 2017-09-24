@@ -1,6 +1,7 @@
 Game TODO List
 Mechanics / Gameplay - Immediate concerns
-    Tile collision 
+    Smooth movement around collision so you can walk around a tile easily as clipping it disables movement even whilst key is held
+    even after you are out of collision range
     Add a camera
     Add a second test scene to test transition between gameplay scenes (outdoors => indoors), 
     as I know that level to level transition should be fairly smooth as I don't need to transfer

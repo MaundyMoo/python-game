@@ -35,28 +35,46 @@ class Player:
         if (self.x > (game.width - self.sprite.get_width())):
             self.x = game.width - self.sprite.get_width()
     
-    def checkCollision(self, map, mapTiles, tileSize):
+    def checkCollision(self, map, mapTiles, tileSize, keys):
         colliding = False
         playerGridX = int(self.x / tileSize[0])
         playerGridY = int(self.y / tileSize[1])
         collisionCheckOffset = 5
+        #TODO, allow WASD
         #Check collisions on topLeft and bottomLeft for collisions on the left
         if mapTiles[map[playerGridY][int((self.x - collisionCheckOffset)/ tileSize[0])]].collision:
             self.moveLeft = False
         elif mapTiles[map[int((self.y + self.sprite.get_height()) / tileSize[1])][int((self.x - collisionCheckOffset)/ tileSize[0])]].collision:
             self.moveLeft = False
+        elif keys[276] ==  1:
+            self.moveLeft = True
+        else:
+            self.moveLeft = False
         #Check collisions on topRight and bottomRight for collisions on the right
+        #275
         if mapTiles[map[playerGridY][int((self.x + self.sprite.get_width() + collisionCheckOffset)/ tileSize[0])]].collision:
             self.moveRight = False
         elif mapTiles[map[int((self.y + self.sprite.get_height()) / tileSize[1])][int((self.x + self.sprite.get_width() + collisionCheckOffset)/ tileSize[0])]].collision:
+            self.moveRight = False
+        elif keys[275] ==  1:
+            self.moveRight = True
+        else:
             self.moveRight = False
         #Check collisions for above
         if mapTiles[map[int((self.y - collisionCheckOffset)/ tileSize[1])][playerGridX]].collision:
             self.moveUp = False
         elif mapTiles[map[int((self.y - collisionCheckOffset)/ tileSize[1])][int((self.x + self.sprite.get_width())/ tileSize[0])]].collision:
             self.moveUp = False
+        elif keys[273] ==  1:
+            self.moveUp = True
+        else:
+            self.moveUp = False
         #Check collisions for below
         if mapTiles[map[int((self.y + self.sprite.get_height() + collisionCheckOffset)/ tileSize[1])][playerGridX]].collision:
             self.moveDown = False
         elif mapTiles[map[int((self.y + self.sprite.get_height() + collisionCheckOffset)/ tileSize[1])][int((self.x + self.sprite.get_width())/ tileSize[0])]].collision:
+            self.moveDown = False
+        elif keys[274] ==  1:
+            self.moveDown = True
+        else:
             self.moveDown = False
